@@ -1,1 +1,2 @@
-# nbp
+# npm i
+# npm run dev
