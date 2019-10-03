@@ -3,6 +3,7 @@ import Link from 'next/link';
 import axios from 'axios';
 import { connect } from "react-redux";
 import { reducer } from '../store.js'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 export class Favourites extends React.Component {
 
@@ -84,17 +85,22 @@ export class Favourites extends React.Component {
       <>
         <h1>Favourite currencies:</h1>
         <div className={'favourites'}>
-          {this.props.favouriteCurrencies.map((code, index) => (
-            <div key={index}>
-              { code }
-              <a
-                className={'delete'}
-                onClick={ () => this.removeFavourite(code) }
-              >
-                Delete
-              </a>    
-            </div>
-          ))}
+          <ReactCSSTransitionGroup
+            transitionName="example"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={300}>
+            {this.props.favouriteCurrencies.map((code, index) => (
+              <div key={index}>
+                { code }
+                <a
+                  className={'delete'}
+                  onClick={ () => this.removeFavourite(code) }
+                >
+                  Delete
+                </a>    
+              </div>
+            ))}
+          </ReactCSSTransitionGroup>
           <div className={'input-wrapper'}>
             <input
               ref="input"
@@ -159,6 +165,24 @@ export class Favourites extends React.Component {
         		float: right;
         		color: red;
         	}
+
+          .example-enter {
+            opacity: 0.01;
+          }
+
+          .example-enter.example-enter-active {
+            opacity: 1;
+            transition: opacity 500ms ease-in;
+          }
+
+          .example-leave {
+            opacity: 1;
+          }
+
+          .example-leave.example-leave-active {
+            opacity: 0.01;
+            transition: opacity 300ms ease-in;
+          }
         `}</style>
       </>
     )
