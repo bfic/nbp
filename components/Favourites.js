@@ -2,7 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 import { connect } from "react-redux";
-import { reducer } from '../store.js'
+import { reducer } from '../store.js';
+import { loadState } from '../helpers/localStorage';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 export class Favourites extends React.Component {
@@ -16,6 +17,15 @@ export class Favourites extends React.Component {
   }
 
   componentDidMount() {
+    // Pobieramy state z local storage
+    let isServer = typeof window === "undefined";
+    if (!isServer) {
+      let persistedState = loadState();
+      if (persistedState && persistedState != {}) {
+        this.props.dispatch({ type: 'SET_FAVOURITES', favouriteCurrencies: persistedState.favouriteCurrencies});
+      }
+    }
+
     let URL1 = "http://api.nbp.pl/api/exchangerates/tables/A/?format=json"
     let URL2 = "http://api.nbp.pl/api/exchangerates/tables/B/?format=json"
 
@@ -164,6 +174,7 @@ export class Favourites extends React.Component {
         	.delete {
         		float: right;
         		color: red;
+            cursor: pointer;
         	}
 
           .example-enter {
