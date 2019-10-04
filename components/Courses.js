@@ -14,6 +14,8 @@ export class Courses extends React.Component {
     }
   }
 
+  messagesEndRef = React.createRef()
+
   componentDidMount() {}
 
   onLoadCourses() {
@@ -45,6 +47,8 @@ export class Courses extends React.Component {
         courses: courses,
         loading: false,
       })
+
+      this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
     })
     .then(function(arrayOfValuesOrErrors) {
       // handling of my array containing values and/or errors. 
@@ -94,6 +98,7 @@ export class Courses extends React.Component {
               ))}
             </div>
           }
+          <div ref={this.messagesEndRef} />
         </div>
         <style jsx>{`
           .courses {
