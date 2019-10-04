@@ -73,7 +73,7 @@ export class Courses extends React.Component {
               </div>
             </div>
           }
-          {this.state.loading === false &&  
+          {this.state.loading === false && this.state.courses.length > 0 &&
             <div className={'courses-box'}>
               {this.state.courses.map((course, index) => (
                 <div
@@ -119,7 +119,7 @@ export class Courses extends React.Component {
             width: 100%;
             display: flex;
             justify-content: center;
-            flex-flow: column;
+            flex-flow: row;
           }
 
           .loading {
@@ -127,28 +127,33 @@ export class Courses extends React.Component {
           }
 
           .courses-box {
-            width: 150px;
-            margin: 0 auto;
-            background: #ddd;
-            float: left;
+            width: 300px;
+            display: inline-block;
+            padding: 20px;
+            background: aliceblue;
+            border-radius: 10px;
             margin-bottom: 20px;
           }
 
           .course-item {
             width: 100%;
-            padding: 5px;
+            height: 40px;
+            line-height: 40px;
+            float: left;
           }
 
           .course-item .code {
             width: 50%;
             text-align: left;
             float: left;
+            font-size: 24px;
           }
 
           .course-item .course {
             width: 50%;
             text-align: right;
             float: left;
+            font-size: 24px;
           }
 
           .spinner {

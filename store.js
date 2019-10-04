@@ -1,6 +1,6 @@
 import {createStore} from "redux";
 import axios from 'axios'
-import { reducer, initialState }  from './reducer'
+import {reducer, initialState}  from './reducer'
 
 /**
 * @param {object} initialState
@@ -11,5 +11,5 @@ import { reducer, initialState }  from './reducer'
 * @param {string} options.storeKey This key will be used to preserve store in global namespace for safe HMR 
 */
 export const makeStore = (initialState, options) => {
-    return createStore(reducer, initialState);
+  return createStore(reducer, initialState);
 };

@@ -51,6 +51,7 @@ export class Favourites extends React.Component {
   addFavourite() {
     let code = this.state.inputValue.toUpperCase();
 
+    // Walidacja
     if (code === 'PLN') {
       alert('It is NBP courses so PLN to PLN ? Makes no sense...')
       return
@@ -66,9 +67,8 @@ export class Favourites extends React.Component {
       return
     }
 
+    // Jezeli walidacja jest ok
     this.props.dispatch({ type: 'ADD_FAVOURITE', code: code})
-
-    // tutaj trzeba to tez bedzie zapisac do localStorage (i z niego usuwac)
 
     // Cleanup inputa
     this.setState(state => {
@@ -154,10 +154,21 @@ export class Favourites extends React.Component {
             border-radius: 10px;
           }
 
-          .action-wrapper {
+          .input-wrapper {
             width: 100%;
+            float: left;
             display: flex;
             align-items: center;
+            margin: 20px 0;
+          }
+
+          .input-wrapper input {
+            height: 40px;
+            line-height: 40px;
+            border: 0px;
+            width: 100%;
+            padding: 0 10px;
+            font-size: 20px;
           }
 
           .action-wrapper {

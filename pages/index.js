@@ -11,13 +11,12 @@ export class Index extends React.Component {
     this.state = {}
   }
 
-
-
   componentDidMount(){}
 
   render() {
     return(
         <div className={'container'}>
+          <h1>NBP Favourite Courses App</h1>
           <Favourites />
           <Courses />
           <style jsx>{`
