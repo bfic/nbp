@@ -242,19 +242,46 @@ export class Favourites extends React.Component {
           .skylight-dialog {
             display: block;
             min-height: 100px !important;
-            width: 400px !important;
+            width: 50% !important;
             margin: 0 !important;
+            left: 25% !important;
+            min-width: 280px;
+            top: 40vh !important;
+          }
+
+          @media only screen and (max-width: 800px) {
+            .skylight-dialog {
+              width: 70% !important;
+              left: 15% !important;
+            }
+          }
+
+          .skylight-dialog .skylight-close-button {
+            top: 10px !important;
           }
 
           .skylight-dialog h2 {
             margin-top: 0;
             text-align: center;
+            font-size: 30px;
+          }
+
+          @media only screen and (max-width: 800px) {
+            .skylight-dialog h2 {
+              font-size: 22px;
+            }
           }
 
           .skylight-dialog div.content {
-            font-size: 16px;
+            font-size: 18px;
             margin-top: 20px;
             margin-bottom: 20px;
+          }
+
+          @media only screen and (max-width: 800px) {
+            .skylight-dialog div.content {
+              font-size: 16px;
+            }
           }
 
           .skylight-dialog .button-wrapper {
