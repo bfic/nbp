@@ -17,7 +17,7 @@ export class Favourites extends React.Component {
   }
 
   componentDidMount() {
-    // Pobieramy state z local storage
+    // Pobieramy favouriteCurrencies z local storage
     let isServer = typeof window === "undefined";
     if (!isServer) {
       let persistedState = loadState();
@@ -25,13 +25,15 @@ export class Favourites extends React.Component {
         this.props.dispatch({ type: 'SET_FAVOURITES', favouriteCurrencies: persistedState.favouriteCurrencies});
       }
     }
-
+ 
+    // TODO - sprawdzic czy nie mozna tego przerucic do SSR
     let URL1 = "http://api.nbp.pl/api/exchangerates/tables/A/?format=json"
     let URL2 = "http://api.nbp.pl/api/exchangerates/tables/B/?format=json"
 
     const promise1 = axios.get(URL1);
     const promise2 = axios.get(URL2);
 
+    // A tutaj pobieramy z nbp api dstepny kody walut (potrzebne do walidacji)
     let availableCodes = [];
     Promise.all([promise1, promise2]).then((values) => {
       values.map((o, i) => {
@@ -93,51 +95,63 @@ export class Favourites extends React.Component {
   render() {
     return(
       <>
-        <h1>Favourite currencies:</h1>
-        <div className={'favourites'}>
-          <ReactCSSTransitionGroup
-            transitionName="example"
-            transitionEnterTimeout={500}
-            transitionLeaveTimeout={300}>
-            {this.props.favouriteCurrencies.map((code, index) => (
-              <div key={index}>
-                { code }
-                <a
-                  className={'delete'}
-                  onClick={ () => this.removeFavourite(code) }
-                >
-                  Delete
-                </a>    
-              </div>
-            ))}
-          </ReactCSSTransitionGroup>
-          <div className={'input-wrapper'}>
-            <input
-              ref="input"
-              className="add-favourite"
-              type="text"
-              placeholder="New code..."
-              onKeyPress={event => {
-                  if (event.key === 'Enter') {
-                    this.addFavourite()
-                  }
-                }}
-              onChange={ this.onInputChange.bind(this) }
-            />
-          </div>
-          <div className={'action-wrapper'}>
-            <a
-              className={'remove-all'}
-              onClick={ () => this.removeAllFavourites() }
+        <h2>Favourite currencies:</h2>
+        <div className={'favourites-wrapper'}>
+          <div className={'favourites'}>
+            <ReactCSSTransitionGroup
+              transitionName="example"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={300}
             >
-              Delete all Favourites
-            </a>
-          </div>
-    	  </div>
+              {this.props.favouriteCurrencies.map((code, index) => (
+                <div className={'element'} key={index}>
+                  <span className={'code'}>{ code }</span>
+                  <a
+                    className={'delete'}
+                    onClick={ () => this.removeFavourite(code) }
+                  >
+                    Delete
+                  </a>    
+                </div>
+              ))}
+            </ReactCSSTransitionGroup>
+            <div className={'input-wrapper'}>
+              <input
+                ref="input"
+                className="add-favourite"
+                type="text"
+                placeholder="New code..."
+                onKeyPress={event => {
+                    if (event.key === 'Enter') {
+                      this.addFavourite()
+                    }
+                  }}
+                onChange={ this.onInputChange.bind(this) }
+              />
+            </div>
+            <div className={'action-wrapper'}>
+              <a
+                className={'delete-all'}
+                onClick={ () => this.removeAllFavourites() }
+              >
+                Delete all Favourites
+              </a>
+            </div>
+      	  </div>
+        </div>
         <style jsx>{`
-          .favourites {
+          .favourites-wrapper {
             width: 100%;
-            font-family: Arial;
+            display: flex;
+            justify-content: center;
+          }
+
+          .favourites {
+            width: 300px;
+            display: inline-block;
+            padding: 20px;
+            background: aliceblue;
+            border-radius: 10px;
           }
 
           .action-wrapper {
@@ -153,23 +167,25 @@ export class Favourites extends React.Component {
             justify-content: center;
           }
 
-          .remove-all {
+          .delete-all {
             width: 100%;
             text-align: center;
             color: red;
             heght: 40px;
-          }
-
-          h1 {
-            width: 100%;
-            float: left;
+            line-height: 40px;
+            cursor: pointer;
           }
 
         	.element {
         		width: 100%;
-        		height: 30px;
+        		height: 40px;
+            line-height: 40px;
         		float: left;
         	}
+
+          .element .code {
+            font-size: 24px;
+          }
 
         	.delete {
         		float: right;

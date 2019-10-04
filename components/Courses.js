@@ -14,19 +14,20 @@ export class Courses extends React.Component {
     }
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   onLoadCourses() {
     this.setState({
       loading: true,
     })
-    // Array z urlami do api
-    let urls = [];
+    
+    let urls = []; // Array z urlami do api
     this.props.favouriteCurrencies.map((code) => {
       urls.push('http://api.nbp.pl/api/exchangerates/rates/a/' + code + '?format=json');
     })
 
+    /* Tutaj pobieramy kursy dla kazdego favouriteCurrencies
+       i umieszamy je w zmiennej courses, ktora wrzucamy pozniej do state */
     let courses = [];
     var promises = urls.map(url => axios.get(url));
     Promise.all(promises).then(results => {
@@ -90,12 +91,6 @@ export class Courses extends React.Component {
           .courses {
             width: 100%;
             font-family: Arial;
-          }
-
-          h2 {
-            display: block;
-            width: 100%;
-            float: left;
           }
 
           .button-wrapper {

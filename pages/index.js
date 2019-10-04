@@ -8,9 +8,10 @@ export class Index extends React.Component {
 
   constructor(props){
     super(props);
-    this.state = {
-    }
+    this.state = {}
   }
+
+
 
   componentDidMount(){}
 
@@ -24,6 +25,7 @@ export class Index extends React.Component {
               width: 100%;
               float: left;
               border: 1px solid #666;
+              padding: 20px;
             }
           `}</style>
       </div>
@@ -31,4 +33,5 @@ export class Index extends React.Component {
   }
 }
 
-export default connect(state => state)(Index);
+// ten page nie jest wpiety do reduxa connectem ,bo nie ma takiej potrzeby
+export default Index;
