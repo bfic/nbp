@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { reducer } from '../store.js';
 import { loadState } from '../helpers/localStorage';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import SkyLight from 'react-skylight';
 
 export class Favourites extends React.Component {
 
@@ -12,6 +13,7 @@ export class Favourites extends React.Component {
     super(props);
     this.state = {
       inputValue: '',
+      errorMessage: ''
     }
   }
 
@@ -24,30 +26,6 @@ export class Favourites extends React.Component {
         this.props.dispatch({ type: 'SET_FAVOURITES', favouriteCurrencies: persistedState.favouriteCurrencies});
       }
     }
-/* 
-    // TODO - check if it can be fetched using SSR
-    let URL1 = "http://api.nbp.pl/api/exchangerates/tables/A/?format=json"
-    let URL2 = "http://api.nbp.pl/api/exchangerates/tables/B/?format=json"
-
-    const promise1 = axios.get(URL1);
-    const promise2 = axios.get(URL2);
-
-    // Here we are fetching currency codes data using nbp api
-    // then we are storing it in availableCodes
-    let availableCodes = [];
-    Promise.all([promise1, promise2]).then((values) => {
-      values.map((o, i) => {
-        o.data[0].rates.map(rate => {
-          availableCodes.push(rate.code)
-        })
-      });
-    });
-
-    this.setState({
-      availableCodes: availableCodes
-    })
-
-    */
   }
 
   addFavourite() {
@@ -55,17 +33,32 @@ export class Favourites extends React.Component {
 
     // Validation
     if (code === 'PLN') {
-      alert('It is NBP courses so PLN to PLN ? Makes no sense...')
+      this.setState({
+        errorMessage: 'It is NBP courses so PLN to PLN ? Makes no sense...',
+        inputValue: ''
+      })
+      this.refs.input.value = '';
+      this.simpleDialog.show()
       return
     }
 
     if (this.props.favouriteCurrencies.includes(code)) {
-      alert('Code is already added to favourites')
+      this.setState({
+        errorMessage: 'Code is already added to favourites',
+        inputValue: ''
+      })
+      this.refs.input.value = '';
+      this.simpleDialog.show()
       return
     }
 
     if (!this.props.availableCodes.includes(code)) {
-      alert('This code is invalid currency code')
+      this.setState({
+        errorMessage: 'This code is invalid currency code',
+        inputValue: ''
+      })
+      this.refs.input.value = '';
+      this.simpleDialog.show()
       return
     }
 
@@ -140,6 +133,25 @@ export class Favourites extends React.Component {
               </a>
             </div>
       	  </div>
+          {typeof window !== 'undefined' && // if there is no such conditional - document is not defined 
+            <SkyLight
+              hideOnOverlayClicked
+              ref={ref => this.simpleDialog = ref}
+              title="Validation error"
+            >
+              <div className={'content'}>
+                { this.state.errorMessage }
+              </div>
+              <div className={'button-wrapper'}>
+                <a
+                  className="close"
+                  onClick={() => this.simpleDialog.hide() }
+                >
+                  Ok
+                </a>
+              </div>
+            </SkyLight>
+          }
         </div>
         <style jsx>{`
           .favourites-wrapper {
@@ -222,6 +234,46 @@ export class Favourites extends React.Component {
           .example-leave.example-leave-active {
             opacity: 0.01;
             transition: opacity 300ms ease-in;
+          }
+
+
+        `}</style>
+        <style jsx global>{`
+          .skylight-dialog {
+            display: block;
+            min-height: 100px !important;
+            width: 400px !important;
+            margin: 0 !important;
+          }
+
+          .skylight-dialog h2 {
+            margin-top: 0;
+            text-align: center;
+          }
+
+          .skylight-dialog div.content {
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+          }
+
+          .skylight-dialog .button-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+          }
+
+          .skylight-dialog .button-wrapper a {
+            height: 40px;
+            line-height: 40px;
+            background: #ddd;
+            display: block;
+            width: 200px;
+            text-align: center;
+            border-radius: 10px;
+            color: #000;
+            font-size: 20px;
+            cursor: pointer;
           }
         `}</style>
       </>

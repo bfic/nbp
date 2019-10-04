@@ -31,6 +31,7 @@
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.8.4",
     "react-redux": "^7.1.1",
+    "react-skylight": "^0.5.1",
     "redux": "^4.0.4"
   }
 }
