@@ -12,12 +12,11 @@ export class Favourites extends React.Component {
     super(props);
     this.state = {
       inputValue: '',
-      availableCodes: []
     }
   }
 
   componentDidMount() {
-    // Pobieramy favouriteCurrencies z local storage
+    // We are getting favouriteCurrencies from localStorage
     let isServer = typeof window === "undefined";
     if (!isServer) {
       let persistedState = loadState();
@@ -25,15 +24,16 @@ export class Favourites extends React.Component {
         this.props.dispatch({ type: 'SET_FAVOURITES', favouriteCurrencies: persistedState.favouriteCurrencies});
       }
     }
- 
-    // TODO - sprawdzic czy nie mozna tego przerucic do SSR
+/* 
+    // TODO - check if it can be fetched using SSR
     let URL1 = "http://api.nbp.pl/api/exchangerates/tables/A/?format=json"
     let URL2 = "http://api.nbp.pl/api/exchangerates/tables/B/?format=json"
 
     const promise1 = axios.get(URL1);
     const promise2 = axios.get(URL2);
 
-    // A tutaj pobieramy z nbp api dstepny kody walut (potrzebne do walidacji)
+    // Here we are fetching currency codes data using nbp api
+    // then we are storing it in availableCodes
     let availableCodes = [];
     Promise.all([promise1, promise2]).then((values) => {
       values.map((o, i) => {
@@ -46,12 +46,14 @@ export class Favourites extends React.Component {
     this.setState({
       availableCodes: availableCodes
     })
+
+    */
   }
 
   addFavourite() {
     let code = this.state.inputValue.toUpperCase();
 
-    // Walidacja
+    // Validation
     if (code === 'PLN') {
       alert('It is NBP courses so PLN to PLN ? Makes no sense...')
       return
@@ -62,12 +64,12 @@ export class Favourites extends React.Component {
       return
     }
 
-    if (!this.state.availableCodes.includes(code)) {
+    if (!this.props.availableCodes.includes(code)) {
       alert('This code is invalid currency code')
       return
     }
 
-    // Jezeli walidacja jest ok
+    // If validaion is success
     this.props.dispatch({ type: 'ADD_FAVOURITE', code: code})
 
     // Cleanup inputa

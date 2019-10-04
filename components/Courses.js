@@ -21,13 +21,13 @@ export class Courses extends React.Component {
       loading: true,
     })
     
-    let urls = []; // Array z urlami do api
+    let urls = []; // Array having urls to fetch
     this.props.favouriteCurrencies.map((code) => {
       urls.push('http://api.nbp.pl/api/exchangerates/rates/a/' + code + '?format=json');
     })
 
-    /* Tutaj pobieramy kursy dla kazdego favouriteCurrencies
-       i umieszamy je w zmiennej courses, ktora wrzucamy pozniej do state */
+    /* Here we are fetching current courses of favouriteCurrencies
+       and then we are storing it in courses variable, which will be populated to state */
     let courses = [];
     var promises = urls.map(url => axios.get(url));
     Promise.all(promises).then(results => {
@@ -60,7 +60,7 @@ export class Courses extends React.Component {
             className="load-courses"
             onClick={() => this.onLoadCourses() }
           >
-            Load curses
+            Load courses
           </a>
         </div>
         <div className={'courses-wrapper'}>

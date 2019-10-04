@@ -15,6 +15,7 @@ export default function Layout(props) {
           width: 100%;
           float: left;
           min-width: 400px;
+          overflow-y: scroll;
       	}
 
     		* {

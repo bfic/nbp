@@ -3,42 +3,122 @@
 import { shallow } from 'enzyme'
 import React from 'react'
 import renderer from 'react-test-renderer'
-
 import { Index } from '../pages/index.js'
+import { Favourites } from '../components/Favourites.js'
+import { Courses } from '../components/Courses.js'
 
-describe('With Enzyme', () => {
-  it('App shows "Batman TV Shows"', () => {
-    const index = shallow(<Index shows={ [] } />)
+describe('1. Components has specific titles', () => {
+  it('Index page shows h1 "NBP Favourite Courses App"', () => {
+    const index = shallow(<Index />)
+    expect(index.find('h1').text()).toEqual('NBP Favourite Courses App')
+  })
 
-    expect(index.find('h1').text()).toEqual('Batman TV Shows')
+  it('Courses component shows h2 "NBP Courses for favourite currencies:"', () => {
+    const courses = shallow(<Courses />)
+    expect(courses.find('h2').text()).toEqual('NBP Courses for favourite currencies:')
+  })
+
+  it('Favourites component shows h2 "Favourite currencies:"', () => {
+    const favourites = shallow(<Favourites favouriteCurrencies={[]} />)
+    expect(favourites.find('h2').text()).toEqual('Favourite currencies:')
+  })
+
+})
+
+describe('2. Favourites shows favouriteCurrencies from props', () => {
+ const favourites = ['EUR', 'JPY', 'GBP', 'NOK'];
+  const fav = shallow(<Favourites favouriteCurrencies={favourites} />)
+  favourites.forEach(code => {
+    it(`includes code ${code} on the list`, () => {
+      expect(fav.containsMatchingElement(<span>{ code }</span>)).toEqual(true)
+    });
   })
 })
 
-describe('With Snapshot Testing', () => {
-  it('App shows "Batman TV Shows"', () => {
-  	const obj = {
-  		externals: {tvrage: 2719, thetvdb: 77871, imdb: "tt0059968"},
-		genres: ["Comedy", "Action", "Adventure"],
-		id: 975,
-		image: {medium: "http://static.tvmaze.com/uploads/images/medium_portrait/6/16463.jpg", original: "http://static.tvmaze.com/uploads/images/original_untouched/6/16463.jpg"},
-		language: "English",
-		name: "Batman",
-		network: {id: 3, name: "ABC", country: {}},
-		officialSite: null,
-		premiered: "1966-01-12",
-		rating: {average: 8},
-		runtime: 30,
-		schedule: {time: "19:30", days: Array(1)},
-		status: "Ended",
-		summary: "<p>Wealthy entrepreneur Bruce Wayne and his ward Dick Grayson lead a double life: they are actually crime fighting duo Batman and Robin. A secret Batpole in the Wayne mansion leads to the Batcave, where Police Commissioner Gordon often calls with the latest emergency threatening Gotham City. Racing to the scene of the crime in the Batmobile, Batman and Robin must (with the help of their trusty Bat-utility-belt) thwart the efforts of a variety of master criminals, including Catwoman, Egghead, The Joker, King Tut, The Penguin, and The Riddler.</p>",
-		type: "Scripted",
-		updated: 1567796826,
-		url: "http://www.tvmaze.com/shows/975/batman",
-		webChannel: null,
-		weight: 82,
-  	}
-    const component = renderer.create(<Index shows={ [obj] }  />)
-    const tree = component.toJSON()
-    expect(tree).toMatchSnapshot()
-  })
-})
+describe('3. Favourites change props', () => {
+	// React doesn't support batched updates on ShallowRendering from v16.
+ 	const favourites = ['EUR', 'JPY', 'GBP', 'NOK'];
+	const fav = shallow(<Favourites favouriteCurrencies={[]} />)
+  fav.setProps({favouriteCurrencies: favourites });
+  favourites.forEach(code => {
+    it(`includes code ${code} on the list`, () => {
+  		expect(fav.containsMatchingElement(<span>{ code }</span>)).toEqual(true)
+    });
+  });
+});
+
+describe('4. Courses component showing spinner when courses are loading', () => {
+  it(`successfully showing spinner during loading`, () => {
+    const courses = shallow(<Courses />)
+    courses.setState({loading: true });
+    // Check if div.loading exists after mocking state
+    expect(courses.find('div.loading')).toBeTruthy();
+	});
+});
+
+describe('5. Courses component showing courses list when courses are loaded', () => {
+	const coursesList = [
+		{
+			code: 'JPY',
+			course: 0.037024
+
+		},
+		{
+			code: 'GBP',
+			course: 4.8832
+		},
+		{
+			code: 'NOK',
+			course: 0.434
+		},
+		{
+			code: 'CHF',
+			course: 3.9694
+		},
+	];
+  const courses = shallow(<Courses />)
+  courses.setState({
+  	loading: false,
+  	courses: coursesList
+  });
+  // Check if list of coursed exists after mocking state
+  coursesList.forEach(course => {
+    it(`successfully showing course item for ${course.code}`, () => {
+    		expect(courses.containsMatchingElement(<div>{ course.code }</div>)).toEqual(true)
+    });
+  });
+});
+
+/* Here we have 'await/async resolve' pattern, because we want to check continuously whether 
+element are successfully fetched through api */
+function test6HelperFunction(courses) {
+  return new Promise(resolve => {
+  	const limit = 10;
+  	let i = 0;
+    setInterval(() => {
+    	const ret = expect(courses.find('div.courses-wrapper').find('div.courses-box')).StoBeTruthy();
+    	if (ret === true || i === limit) {
+      	resolve();
+    	}
+    	i++;
+    }, 200);
+  });
+}
+
+async function test6ValidateResponse(courses) {
+  const ret = await test6HelperFunction(courses);
+}
+
+// Here we are using simulate to test interactions
+describe('6. Courses after clicking on Load more button should trigger loading and display div.courses-box', () => {
+	it('displays div.courses-box after clicking on a button and waiting some time', () => {
+    const courses = shallow(<Courses />)
+
+    // We need to mock favouriteCurrencies here
+ 		const favourites = ['EUR', 'JPY', 'GBP', 'NOK'];
+  	courses.setProps({favouriteCurrencies: favourites });
+
+	  courses.find('a.load-courses').simulate('click')
+	  test6ValidateResponse(courses)
+	});
+});
