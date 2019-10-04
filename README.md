@@ -6,17 +6,17 @@ App developped as a Frontend Practical Assignment
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Used technologies
+## Used technologies
 
 next, react, redux, css-in-js, jest
 
-### Installing
+## Installing
 
 ```
 npm i
 ```
 
-### Running in dev mode
+## Running in dev mode
 
 ```
 npm run dev
