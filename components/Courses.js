@@ -29,7 +29,9 @@ export class Courses extends React.Component {
     /* Here we are fetching current courses of favouriteCurrencies
        and then we are storing it in courses variable, which will be populated to state */
     let courses = [];
-    var promises = urls.map(url => axios.get(url));
+    var promises = urls.map(url =>
+      axios.get(url)
+    );
     Promise.all(promises).then(results => {
       results.map((obj) => {
         let courseObj = {
@@ -43,6 +45,12 @@ export class Courses extends React.Component {
         courses: courses,
         loading: false,
       })
+    })
+    .then(function(arrayOfValuesOrErrors) {
+      // handling of my array containing values and/or errors. 
+    })
+    .catch(function(err) {
+      console.log(err); // some coding error in handling happened
     });
   }
 

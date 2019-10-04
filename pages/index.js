@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { connect } from "react-redux";
-import { reducer } from '../store.js'
-import Favourites from '../components/Favourites'
-import Courses from '../components/Courses'
-import axios from 'axios'
+import { reducer } from '../store.js';
+import AvailableCodes from '../components/AvailableCodes';
+import Favourites from '../components/Favourites';
+import Courses from '../components/Courses';
+import axios from 'axios';
 
 export class Index extends React.Component {
 
@@ -12,22 +13,21 @@ export class Index extends React.Component {
     this.state = {}
   }
 
-  componentDidMount(){}
-
+  componentDidMount() {}
 
   static async getInitialProps({store, isServer, pathname, query}) {
     // This codes are fetched during SSR (before initial render)
     // and passed as props to Favourits component
     let URL1 = "http://api.nbp.pl/api/exchangerates/tables/A/?format=json"
-    let URL2 = "http://api.nbp.pl/api/exchangerates/tables/B/?format=json"
+    // let URL2 = "http://api.nbp.pl/api/exchangerates/tables/B/?format=json"
 
     const promise1 = axios.get(URL1);
-    const promise2 = axios.get(URL2);
+    // const promise2 = axios.get(URL2);
 
     // Here we are fetching currency codes data using nbp api
     // then we are storing it in availableCodes
     const availableCodes = [];
-    return Promise.all([promise1, promise2]).then((values) => {
+    return Promise.all([promise1]).then((values) => {
       
       values.map((o, i) => {
         o.data[0].rates.map(rate => {
@@ -46,13 +46,13 @@ export class Index extends React.Component {
     return(
         <div className={'container'}>
           <h1>NBP Favourite Courses App</h1>
-          <Favourites availableCodes={this.props.availableCodes} />
+          <AvailableCodes availableCodes={this.props.availableCodes} />
+          <Favourites />
           <Courses />
           <style jsx>{`
             .container {
               width: 100%;
               float: left;
-              border: 1px solid #666;
               padding: 20px;
             }
           `}</style>

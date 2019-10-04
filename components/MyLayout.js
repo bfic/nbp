@@ -1,11 +1,6 @@
-const layoutStyle = {
-  padding: 20,
-  width: '100%'
-}
-
 export default function Layout(props) {
   return (
-    <div style={layoutStyle}>
+    <div>
       {props.children}
       <style jsx global>{`
       	html, body {
@@ -16,6 +11,13 @@ export default function Layout(props) {
           float: left;
           min-width: 400px;
       	}
+
+        html::-webkit-scrollbar { width: 0 !important }
+        html {
+          overflow: -moz-scrollbars-none;
+          -ms-overflow-style: none;
+        }
+
 
     		* {
     			box-sizing: border-box;
