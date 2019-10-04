@@ -245,7 +245,7 @@ export class Favourites extends React.Component {
             width: 50% !important;
             margin: 0 !important;
             left: 25% !important;
-            min-width: 280px;
+            min-width: 200px;
             top: 40vh !important;
           }
 
@@ -269,6 +269,7 @@ export class Favourites extends React.Component {
           @media only screen and (max-width: 800px) {
             .skylight-dialog h2 {
               font-size: 22px;
+              padding: 0 10px;
             }
           }
 

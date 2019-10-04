@@ -31,6 +31,7 @@ export class Index extends React.Component {
       
       values.map((o, i) => {
         o.data[0].rates.map(rate => {
+          console.log(rate)
           availableCodes.push(rate.code)
         })
       });
@@ -47,7 +48,7 @@ export class Index extends React.Component {
         <div className={'container'}>
           <h1>NBP Favourite Courses App</h1>
           <AvailableCodes availableCodes={this.props.availableCodes} />
-          <Favourites />
+          <Favourites availableCodes={this.props.availableCodes} />
           <Courses />
           <style jsx>{`
             .container {

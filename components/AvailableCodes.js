@@ -59,6 +59,7 @@ export class AvailableCodes extends React.Component {
             float: left;
             margin-left: 5px;
             margin-right: 5px;
+            font-size: 22px;
           }
         `}</style>
       </div>

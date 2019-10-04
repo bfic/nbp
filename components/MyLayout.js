@@ -9,7 +9,7 @@ export default function Layout(props) {
           font-family: Arial;
           width: 100%;
           float: left;
-          min-width: 400px;
+          min-width: 320px;
       	}
 
         html::-webkit-scrollbar { width: 0 !important }
@@ -17,7 +17,6 @@ export default function Layout(props) {
           overflow: -moz-scrollbars-none;
           -ms-overflow-style: none;
         }
-
 
     		* {
     			box-sizing: border-box;
