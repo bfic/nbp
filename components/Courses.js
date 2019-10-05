@@ -29,7 +29,7 @@ export class Courses extends React.Component {
     })
 
     /* Here we are fetching current courses of favouriteCurrencies
-       and then we are storing it in courses variable, which will be populated to state */
+       and then we are storing them in courses variable, that later will be populated to state */
     let courses = [];
     var promises = urls.map(url =>
       axios.get(url)

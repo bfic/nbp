@@ -4,11 +4,10 @@ export const initialState = {
   favouriteCurrencies: []
 }
 
-/* After each action we are storing new state in localStorage */
+/* After each action (exept SET_FAVOURITES) we are saving new state in localStorage */
 export const reducer = (state = initialState, action) => {
     switch (action.type) {
         case 'SET_FAVOURITES':
-          // ta akcje zapisuje w storze initialState pobrany z localStorage
           return {
             ...state,
             favouriteCurrencies: action.favouriteCurrencies

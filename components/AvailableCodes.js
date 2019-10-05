@@ -8,8 +8,6 @@ export class AvailableCodes extends React.Component {
     this.state = {}
   }
 
-  componentDidMount() {}
-
   render() {
     return(
       <div className={'available-codes'}>

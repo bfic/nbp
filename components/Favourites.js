@@ -69,7 +69,7 @@ export class Favourites extends React.Component {
     // If validaion is success
     this.props.dispatch({ type: 'ADD_FAVOURITE', code: code})
 
-    // Cleanup inputa
+    // Input cleanup
     this.setState(state => {
       return { 
         inputValue: '',
