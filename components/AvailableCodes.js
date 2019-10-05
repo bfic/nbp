@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactTooltip from 'react-tooltip'
 
 export class AvailableCodes extends React.Component {
 
@@ -16,12 +17,12 @@ export class AvailableCodes extends React.Component {
         <div className={'available-codes-wrapper'}>
           {this.props.availableCodes.length > 0 &&
             <div className={'available-codes-box'}>
-              {this.props.availableCodes.map((code, index) => (
+              {this.props.availableCodes.map((obj, index) => (
                 <div
                   className={'available-code-item'}
                   key={index}
                 >
-                  <div className={'code'}>{ code }
+                  <div className={'code'} data-tip={obj.currency}>{ obj.code }
                   {index != this.props.availableCodes.length-1 &&
                     <span>,</span>
                   }
@@ -30,6 +31,7 @@ export class AvailableCodes extends React.Component {
               ))}
             </div>
           }
+          <ReactTooltip />
         </div>
         <style jsx>{`
           .available-codes {

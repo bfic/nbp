@@ -31,8 +31,11 @@ export class Index extends React.Component {
       
       values.map((o, i) => {
         o.data[0].rates.map(rate => {
-          console.log(rate)
-          availableCodes.push(rate.code)
+          let obj = {
+            code: rate.code,
+            currency: rate.currency
+          }
+          availableCodes.push(obj)
         })
       });
 

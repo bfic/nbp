@@ -48,7 +48,9 @@ export class Courses extends React.Component {
         loading: false,
       })
 
-      this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+      if (this.messagesEndRef && this.messagesEndRef.current)  {
+        this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+      }
     })
     .then(function(arrayOfValuesOrErrors) {
       // handling of my array containing values and/or errors. 

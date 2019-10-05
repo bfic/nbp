@@ -52,7 +52,11 @@ export class Favourites extends React.Component {
       return
     }
 
-    if (!this.props.availableCodes.includes(code)) {
+    const availableCodes = [];
+    this.props.availableCodes.map((o, i) => {
+      availableCodes.push(o.code)
+    });
+    if (!availableCodes.includes(code)) {
       this.setState({
         errorMessage: 'This code is invalid currency code',
         inputValue: ''

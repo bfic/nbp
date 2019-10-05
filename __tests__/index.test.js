@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import React from 'react'
 import renderer from 'react-test-renderer'
 import { Index } from '../pages/index.js'
@@ -120,5 +120,51 @@ describe('6. Courses after clicking on Load more button should trigger loading a
 
 	  courses.find('a.load-courses').simulate('click')
 	  test6ValidateResponse(courses)
+	});
+});
+
+// Validation
+describe('7. Invalid code name trigger displaying popup', () => {
+  const favouritesArray = ['JPY'];
+  const favourites = mount(<Favourites favouriteCurrencies={favouritesArray} />)
+  const availableCodes = [
+  	{ code: 'GBP', currency: 'British Pound'},
+  	{ code: 'EUR', currency: 'Euro'},
+  	{ code: 'NOK', currency: 'Norway crown'},
+  ];
+  favourites.setProps({
+  	availableCodes:availableCodes,
+  })
+
+  const arr = ['PLN', 'OOP', 'JPY'];
+  arr.forEach(code => {
+	  it(`successfully showing skylight-dialog after trying to submit wrong code ${code}`, () => {
+	    const favouritesArray = ['JPY'];
+	    const favourites = mount(<Favourites favouriteCurrencies={favouritesArray} />)
+	    const availableCodes = [
+	    	{ code: 'GBP', currency: 'British Pound'},
+	    	{ code: 'EUR', currency: 'Euro'},
+	    	{ code: 'NOK', currency: 'Norway crown'},
+	    ];
+	    favourites.setProps({
+	    	availableCodes:availableCodes,
+	    })
+	    favourites.setState({inputValue: code });
+		  favourites.find('.add-favourite').simulate('keypress', {key: 'Enter'})
+
+		  if (code == 'PLN') {
+				expect(
+					favourites.find('div.favourites-wrapper').find('div.skylight-dialog').find('div.content').text()
+				).toEqual('It is NBP courses so PLN to PLN ? Makes no sense...');
+		  } else if (code === 'OOP') {
+				expect(
+					favourites.find('div.favourites-wrapper').find('div.skylight-dialog').find('div.content').text()
+				).toEqual('This code is invalid currency code');
+		  } else if (code === 'JPY') {
+				expect(
+					favourites.find('div.favourites-wrapper').find('div.skylight-dialog').find('div.content').text()
+				).toEqual('Code is already added to favourites');
+		  }
+		});
 	});
 });
