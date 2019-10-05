@@ -6,6 +6,7 @@ import renderer from 'react-test-renderer'
 import { Index } from '../pages/index.js'
 import { Favourites } from '../components/Favourites.js'
 import { Courses } from '../components/Courses.js'
+import { AvailableCodes } from '../components/AvailableCodes.js'
 
 describe('1. Components has specific titles', () => {
   it('Index page shows h1 "NBP Favourite Courses App"', () => {
@@ -139,16 +140,6 @@ describe('7. Invalid code name trigger displaying popup', () => {
   const arr = ['PLN', 'OOP', 'JPY'];
   arr.forEach(code => {
 	  it(`successfully showing skylight-dialog after trying to submit wrong code ${code}`, () => {
-	    const favouritesArray = ['JPY'];
-	    const favourites = mount(<Favourites favouriteCurrencies={favouritesArray} />)
-	    const availableCodes = [
-	    	{ code: 'GBP', currency: 'British Pound'},
-	    	{ code: 'EUR', currency: 'Euro'},
-	    	{ code: 'NOK', currency: 'Norway crown'},
-	    ];
-	    favourites.setProps({
-	    	availableCodes:availableCodes,
-	    })
 	    favourites.setState({inputValue: code });
 		  favourites.find('.add-favourite').simulate('keypress', {key: 'Enter'})
 
@@ -167,4 +158,22 @@ describe('7. Invalid code name trigger displaying popup', () => {
 		  }
 		});
 	});
+});
+
+describe('8. AvailableCodes displays codes', () => {
+  const availableCodes = [
+  	{ code: 'GBP', currency: 'British Pound'},
+  	{ code: 'EUR', currency: 'Euro'},
+  	{ code: 'NOK', currency: 'Norway crown'}
+  ];
+	const acodescomp = shallow(<AvailableCodes availableCodes={availableCodes} />);
+
+	availableCodes.forEach(code => {
+		const c = code.code;
+	  it('AvailableCodes shows ' + c, () => {
+	    expect(
+	    	acodescomp.containsMatchingElement({c})
+	    ).toEqual(true)
+	  })
+	})
 });
