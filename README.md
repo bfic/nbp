@@ -8,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Used technologies
 
-next, react, redux, css-in-js, jest
+next, react, redux, css-in-js, jest, ssr
 
 ## Installing
 
@@ -32,7 +32,7 @@ npm run test
 
 ```
 npm run build
-npm run start --> for production
+npm run start
 ```
 
 ## Authors
